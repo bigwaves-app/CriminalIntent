@@ -19,6 +19,7 @@ import java.util.List;
  */
 public class CrimeListFragment extends Fragment {
 
+    private static final int REQUEST_CRIME = 1;
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
@@ -33,12 +34,6 @@ public class CrimeListFragment extends Fragment {
         updateUI();
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUI();
     }
 
     private void updateUI() {
@@ -79,7 +74,15 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CRIME);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CRIME) {
+            int index = data.getIntExtra("xx", 0);
+            mAdapter.notifyItemChanged(index);
         }
     }
 
